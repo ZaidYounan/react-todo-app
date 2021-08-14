@@ -1,10 +1,10 @@
 import React from 'react'
 
-function Form() {
+function Form(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        alert('Task added.');
+        props.addTask("Say hello!");
     }
 
     return (
