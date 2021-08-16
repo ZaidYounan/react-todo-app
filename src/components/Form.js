@@ -6,7 +6,11 @@ function Form(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
-        props.addTask(name);
+        if (name.length) {
+            props.addTask(name);
+        } else {
+            alert("Field cannot be empty.")
+        }
         setName("");
     }
 
