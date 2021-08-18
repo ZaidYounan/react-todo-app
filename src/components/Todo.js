@@ -1,9 +1,21 @@
 import React from "react";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
+
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
 
 export default function Todo(props) {
   const [ editing, setEditing ] = useState(false);
   const [newName, setNewName] = useState('');
+  const editFieldRef = useRef(null);
+  const editButtonRef = useRef(null);
+  const wasEditing = usePrevious(editing);
+
 
   function handleChange(e) {
     setNewName(e.target.value);
@@ -22,7 +34,7 @@ export default function Todo(props) {
         <label className="todo-label" htmlFor={props.id}>
           New name for {props.name}
         </label>
-        <input id={props.id} className="todo-text" type="text" value={newName} onChange={handleChange}/>
+        <input id={props.id} className="todo-text" type="text" value={newName} onChange={handleChange} ref={editFieldRef}/>
       </div>
       <div className="btn-group">
         <button type="button" className="btn todo-cancel" onClick={() => setEditing(false)}>
@@ -51,7 +63,7 @@ export default function Todo(props) {
           </label>
         </div>
         <div className="btn-group">
-          <button type="button" className="btn" onClick={() => setEditing(true)}>
+          <button type="button" className="btn" onClick={() => setEditing(true)}   ref={editButtonRef}>
             Edit <span className="visually-hidden">{props.name}</span>
           </button>
           <button
@@ -64,6 +76,16 @@ export default function Todo(props) {
         </div>
     </div>
   );
+
+  useEffect(() => {
+    if (!wasEditing && editing) {
+      editFieldRef.current.focus();
+    } 
+    if (wasEditing && !editing) {
+      editButtonRef.current.focus();
+    }
+  }, [wasEditing, editing]);
+
 
   return (
         <li className="todo">
