@@ -4,7 +4,7 @@ import usePrevious from "./usePrevious";
 
 export default function Todo(props) {
   const [ editing, setEditing ] = useState(false);
-  const [newName, setNewName] = useState('');
+  const [newName, setNewName] = useState(props.name ? props.name : '');
   const editFieldRef = useRef(null);
   const editButtonRef = useRef(null);
   const wasEditing = usePrevious(editing);
@@ -17,7 +17,6 @@ export default function Todo(props) {
   function handleSubmit(e) {
     e.preventDefault();
     props.editTask(props.id, newName);
-    setNewName("");
     setEditing(false);
   }
   

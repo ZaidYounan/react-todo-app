@@ -33,6 +33,7 @@ function Form(props) {
                 name="text"
                 autoComplete="off"
                 value={name}
+                placeholder={name}
                 onChange={handleChange}
                 />
                 <button type="submit" className="btn btn__primary btn__lg">
